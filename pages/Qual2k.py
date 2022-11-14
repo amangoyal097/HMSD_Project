@@ -94,12 +94,10 @@ if uploaded_file is not None and st.session_state.uploaded:
         width=1000,
         height=500,
         font=dict(size=18),
+        xaxis=dict(title="Distance (in km)"),
+        yaxis=dict(title="Water Quality Index"),
     )
     st.plotly_chart(fig)
-
-    # fig = px.histogram(df['Class distribution'])
-
-    # fig.show()
     an = [1, 2, 3, 4, 5]
     bn = []
     bn.append(c1)
@@ -121,6 +119,7 @@ if uploaded_file is not None and st.session_state.uploaded:
         color=colors,
         text=bn,
         title="Data points per category of water quality",
+        labels=dict(x="Water Quality", y="Count"),
     )
     fig.update_layout(
         width=1000,
