@@ -18,7 +18,7 @@ st.markdown(hide_menu_style, unsafe_allow_html=True)
 
 uploaded_file = st.file_uploader("Upload Qual2k Output file (csv)", type=[".csv"])
 
-if uploaded_file is not None and st.session_state.uploaded:
+if uploaded_file is not None:
     print(uploaded_file)
     data = pd.read_csv(uploaded_file)
     df = pd.DataFrame(
@@ -34,9 +34,7 @@ if uploaded_file is not None and st.session_state.uploaded:
     k = []
     for i in arr:
         # print(0.17*i[0] + 0.12*i[1] + 0.1*(i[2] + i[3] + i[4]) + 0.08*i[5])
-        wqi = (
-            0.17 * i[0] + 0.12 * i[1] + 0.1 * (i[2] + i[3] + i[4]) + 0.08 * i[5]
-        ) / 8.5
+        wqi = 0.17 * i[0] + 0.12 * i[1] + 0.1 * (i[2] + i[3] / 10 + i[4]) + 0.08 * i[5]
         ans.append(wqi)
         y.append(i[6])
         a = wqi
@@ -119,7 +117,7 @@ if uploaded_file is not None and st.session_state.uploaded:
         color=colors,
         text=bn,
         title="Data points per category of water quality",
-        labels=dict(x="Water Quality", y="Count"),
+        labels=dict(x="Water Quality Class", y="Count"),
     )
     fig.update_layout(
         width=1000,
