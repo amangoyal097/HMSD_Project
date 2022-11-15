@@ -8,3 +8,14 @@ The tool calculates environmental flow using the class and the release data give
 pip install -r requirements.txt
 streamlit run main.py
 ```
+
+## For Environmental Flow Estimation
+
+1. Add the "release_input.csv" file to the web app
+2. Choose a preferred EMC
+3. Click Submit
+
+## For Qual2k
+
+1. Add the "inputdata.csv" file in the first file uploader
+2. Add the "temperature.csv" file in the second file uploader

@@ -1,9 +1,8 @@
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
 import plotly.graph_objs as go
-from plotly.offline import iplot
 import plotly.express as px
+from PIL import Image
 
 st.title("Qual2k Model")
 
@@ -17,10 +16,13 @@ st.markdown(hide_menu_style, unsafe_allow_html=True)
 
 
 uploaded_file = st.file_uploader("Upload Qual2k Output file (csv)", type=[".csv"])
+temperature_file = st.file_uploader("Upload Temperature File (csv)", type=[".csv"])
+image = Image.open("pages/__pycache__/map_image.jpeg")
 
-if uploaded_file is not None:
+if uploaded_file is not None and temperature_file is not None:
     print(uploaded_file)
     data = pd.read_csv(uploaded_file)
+    data2 = pd.read_csv(temperature_file)
     df = pd.DataFrame(
         data,
         columns=["DO(mgO2/L)", "pH", "CBODu", "NO3(ugN/L)", "TP", "(mgD/L)", "x(km)"],
@@ -32,9 +34,17 @@ if uploaded_file is not None:
     c = []
     c1 = c2 = c3 = c4 = c5 = 0
     k = []
+    cnt = 0
     for i in arr:
         # print(0.17*i[0] + 0.12*i[1] + 0.1*(i[2] + i[3] + i[4]) + 0.08*i[5])
-        wqi = 0.17 * i[0] + 0.12 * i[1] + 0.1 * (i[2] + i[3] / 10 + i[4]) + 0.08 * i[5]
+        wqi = (
+            0.17 * i[0]
+            + 0.12 * i[1]
+            + 0.1 * (i[2] + i[3] / 10 + i[4])
+            + 0.08 * i[5]
+            + 0.10 * data2["Average"][cnt]
+        )
+        cnt += 1
         ans.append(wqi)
         y.append(i[6])
         a = wqi
@@ -96,7 +106,7 @@ if uploaded_file is not None:
         yaxis=dict(title="Water Quality Index"),
     )
     st.plotly_chart(fig)
-    an = [1, 2, 3, 4, 5]
+    an = ["A", "B", "C", "D", "E"]
     bn = []
     bn.append(c1)
     bn.append(c2)
@@ -125,3 +135,4 @@ if uploaded_file is not None:
         font=dict(size=18),
     )
     st.plotly_chart(fig)
+    st.image(image, caption="Fox river water quality")
